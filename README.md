@@ -1,30 +1,74 @@
+<div align="center">
+
 # date-wiz 🧙
 
-> A zero-dependency, TypeScript-native date utility library — smart formatting, business logic, i18n, and intelligent parsing in under 2 KB (gzipped).
+**A zero-dependency, TypeScript-native date utility library.**  
+Smart formatting · Business day logic · Intelligent parsing · Full i18n — all in under 2 KB gzipped.
 
-📖 **[Full documentation →](https://GourangaDasSamrat.github.io/date-wiz-docs)**
+[![npm version](https://img.shields.io/npm/v/date-wiz?style=flat-square&color=7c3aed)](https://www.npmjs.com/package/date-wiz)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/date-wiz?style=flat-square&color=7c3aed&label=gzipped)](https://bundlephobia.com/package/date-wiz)
+[![license](https://img.shields.io/npm/l/date-wiz?style=flat-square&color=7c3aed)](./LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/GourangaDasSamrat/date-wiz/ci.yml?style=flat-square&label=CI)](https://github.com/GourangaDasSamrat/date-wiz/actions/workflows/ci.yml)
+[![npm downloads](https://img.shields.io/npm/dm/date-wiz?style=flat-square&color=7c3aed)](https://www.npmjs.com/package/date-wiz)
 
-[![npm version](https://img.shields.io/npm/v/date-wiz)](https://www.npmjs.com/package/date-wiz)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/date-wiz)](https://bundlephobia.com/package/date-wiz)
-[![license](https://img.shields.io/npm/l/date-wiz)](./LICENSE)
-[![CI](https://github.com/GourangaDasSamrat/date-wiz/actions/workflows/ci.yml/badge.svg)](https://github.com/GourangaDasSamrat/date-wiz/actions/workflows/ci.yml)
-[![Publish](https://github.com/GourangaDasSamrat/date-wiz/actions/workflows/publish.yml/badge.svg)](https://github.com/GourangaDasSamrat/date-wiz/actions/workflows/publish.yml)
+<br/>
+
+### 📖 [Full Documentation →](https://GourangaDasSamrat.github.io/date-wiz-docs)
+
+*Guides · API reference · Examples · i18n · Tree-shaking*
+
+</div>
+
+---
+
+## Overview
+
+```ts
+import { wiz, format, getRelativeTime, smartFormat, parse } from 'date-wiz';
+
+// Chainable API
+const deadline = wiz(new Date())
+  .add(3, 'businessDays')
+  .setHour(17)
+  .format('LLL');
+// → "March 20, 2026 at 5:00 PM"
+
+// Relative time with precision
+getRelativeTime(twoDaysAgo, { precision: 2, locale: 'en' });
+// → "2 days, 4 hours ago"
+
+// Context-aware smart labels
+smartFormat(new Date());              // → "Today at 2:30 PM"
+smartFormat(yesterday);               // → "Yesterday at 11:00 AM"
+smartFormat(new Date('2022-10-12'));   // → "Oct 12, 2022"
+
+// i18n — zero locale files bundled
+format(new Date(), 'DD MMMM YYYY', 'bn-BD'); // → "১৫ মার্চ ২০২৬"
+format(new Date(), 'DD MMMM YYYY', 'ar');    // → "١٥ مارس ٢٠٢٦"
+
+// Intelligent parsing — no format string needed
+parse('+2d');          // → 2 days from now
+parse('next_monday');  // → next Monday
+parse('15-05-2024');   // → Date(2024-05-15)
+```
+
+> **The README covers the essentials. For complete guides, all API options, React/Next.js examples, and more — visit the [documentation site](https://GourangaDasSamrat.github.io/date-wiz-docs).**
 
 ---
 
 ## Why date-wiz?
 
-| Feature | Moment.js | Day.js | **date-wiz** |
-|---|---|---|---|
-| Zero dependencies | ❌ | ✅ | ✅ |
-| Bundle size | ~70 KB | ~7 KB | **< 2 KB** |
+| | Moment.js | Day.js | **date-wiz** |
+|---|:---:|:---:|:---:|
+| Zero runtime dependencies | ❌ | ✅ | ✅ |
+| Bundle size (gzipped) | ~70 KB | ~7 KB | **< 2 KB** |
 | TypeScript native | ❌ | Partial | ✅ |
-| Tree-shakable (ESM) | ❌ | ❌ | ✅ |
-| Business days | Plugin | Plugin | **Built-in** |
-| Smart formatting | ❌ | ❌ | ✅ |
-| Intelligent parsing | ❌ | ❌ | ✅ |
-| Immutable | ❌ | ✅ | ✅ |
-| i18n via `Intl` | ❌ | Plugin | **Built-in** |
+| Tree-shakable ESM | ❌ | ❌ | ✅ |
+| Business day logic | Plugin | Plugin | ✅ Built-in |
+| Smart context-aware formatting | ❌ | ❌ | ✅ Built-in |
+| Intelligent parsing | ❌ | ❌ | ✅ Built-in |
+| i18n via native `Intl` | ❌ | Plugin | ✅ Built-in |
+| Immutable operations | ❌ | ✅ | ✅ |
 
 ---
 
@@ -38,319 +82,172 @@ pnpm add date-wiz
 yarn add date-wiz
 ```
 
----
-
-## Quick Start
-
-```ts
-import { wiz, format, getRelativeTime, parse, smartFormat } from 'date-wiz';
-
-// Chainable API
-const deadline = wiz(new Date())
-  .add(3, 'businessDays')
-  .setHour(17)
-  .format('LLL');
-
-// Standalone (best for tree-shaking)
-const rel = getRelativeTime(oldDate, { locale: 'en', precision: 2 });
-// → "2 days, 4 hours ago"
-```
+**Requirements:** Node.js ≥ 14 · TypeScript ≥ 4.7 (optional but recommended)
 
 ---
 
-## API Reference
+## Features at a glance
 
-### `wiz(date?)` — Chainable Factory
-
-Create an immutable, chainable date-wiz instance.
-
-```ts
-import { wiz } from 'date-wiz';
-
-wiz()                          // wraps current time
-wiz(new Date())                // wraps a Date
-wiz(1715731200000)             // wraps a timestamp
-wiz('2024-05-15')              // wraps a string
-
-// Chaining
-wiz(new Date())
-  .add(5, 'days')
-  .subtract(2, 'hours')
-  .setHour(9)
-  .setMinute(30)
-  .format('YYYY-MM-DD HH:mm') // "2024-05-20 09:30"
-
-// Available chain methods
-.add(amount, unit)      // → new WizInstance
-.subtract(amount, unit) // → new WizInstance
-.setHour(0-23)          // → new WizInstance
-.setMinute(0-59)        // → new WizInstance
-.format(token?, locale?) // → string
-.smartFormat(options?)   // → string
-.relative(options?)      // → string
-.toDate()                // → Date
-.toISO()                 // → string (ISO 8601)
-.valueOf()               // → number (unix ms)
-```
-
----
-
-### `format(date, token?, locale?, opts?)` — Token Formatting
+### `format()` — Token-based formatting
 
 ```ts
 import { format } from 'date-wiz';
-// or: import { format } from 'date-wiz/format';
 
-format(new Date(), 'YYYY-MM-DD')          // "2026-03-15"
-format(new Date(), 'DD MMMM YYYY', 'en') // "15 March 2026"
-format(new Date(), 'DD MMMM', 'bn-BD')   // "১৫ মার্চ"
-format(new Date(), 'hh:mm A')            // "02:30 PM"
-format(new Date(), 'LLL')                // "March 15, 2026 at 2:30 PM"
-format('bad input', 'YYYY', undefined, { fallback: 'N/A' }) // "N/A"
+format(new Date(), 'YYYY-MM-DD')           // "2026-03-15"
+format(new Date(), 'DD MMMM YYYY', 'en')  // "15 March 2026"
+format(new Date(), 'DD MMMM', 'bn-BD')    // "১৫ মার্চ"
+format(new Date(), 'LLL')                 // "March 15, 2026 at 2:30 PM"
+format('invalid', 'YYYY', undefined, { fallback: 'N/A' }) // "N/A"
 ```
 
-**Supported tokens:**
-
-| Token | Output | Example |
-|---|---|---|
-| `YYYY` | 4-digit year | `2026` |
-| `YY` | 2-digit year | `26` |
-| `MMMM` | Full month (i18n) | `March` |
-| `MMM` | Short month (i18n) | `Mar` |
-| `MM` | Month 2-digit | `03` |
-| `M` | Month no pad | `3` |
-| `DD` | Day 2-digit | `05` |
-| `D` | Day no pad | `5` |
-| `dddd` | Full weekday (i18n) | `Sunday` |
-| `ddd` | Short weekday (i18n) | `Sun` |
-| `HH` | 24h hours padded | `14` |
-| `H` | 24h hours | `14` |
-| `hh` | 12h hours padded | `02` |
-| `h` | 12h hours | `2` |
-| `mm` | Minutes padded | `05` |
-| `ss` | Seconds padded | `07` |
-| `A` | AM/PM | `PM` |
-| `a` | am/pm | `pm` |
-| `LLL` | Locale long | `March 15, 2026 at 2:30 PM` |
-| `LL` | Locale medium | `March 15, 2026` |
-| `L` | Locale short | `3/15/2026` |
-| `LT` | Locale time | `2:30 PM` |
-| `x` | Unix ms | `1710504600000` |
-| `X` | Unix seconds | `1710504600` |
+Supports 20+ tokens: `YYYY`, `MM`, `DD`, `HH`, `mm`, `ss`, `dddd`, `MMMM`, `LLL`, `x`, and more.  
+→ [Full token reference](https://GourangaDasSamrat.github.io/date-wiz-docs/api/format/)
 
 ---
 
-### `getRelativeTime(date, options?)` — Relative Time
+### `getRelativeTime()` — Relative time with i18n
 
 ```ts
 import { getRelativeTime } from 'date-wiz';
-// or: import { getRelativeTime } from 'date-wiz/relative';
 
-getRelativeTime(twoDaysAgo)
-// → "2 days ago"
-
-getRelativeTime(twoDaysAgo, { precision: 2 })
-// → "2 days, 4 hours ago"
-
-getRelativeTime(nextWeek, { locale: 'fr' })
-// → "dans 7 jours"
-
-getRelativeTime(fiveMinutesAgo, { locale: 'bn' })
-// → "৫ মিনিট আগে"
+getRelativeTime(fiveMinutesAgo)                       // "5 minutes ago"
+getRelativeTime(fiveMinutesAgo, { precision: 2 })     // "5 minutes, 30 seconds ago"
+getRelativeTime(fiveMinutesAgo, { locale: 'fr' })     // "il y a 5 minutes"
+getRelativeTime(fiveMinutesAgo, { locale: 'bn-BD' })  // "৫ মিনিট আগে"
+getRelativeTime(nextWeek)                             // "in 7 days"
 ```
 
-**Options:**
-
-| Option | Type | Default | Description |
-|---|---|---|---|
-| `locale` | `string` | `'en'` | BCP 47 locale |
-| `precision` | `1 \| 2 \| 3` | `1` | Number of units to include |
-| `justNowThreshold` | `number` | `45` | Seconds below which "just now" is shown |
-| `fallback` | `string \| null` | `'Invalid Date'` | Value for invalid inputs |
-| `baseDate` | `DateInput` | `new Date()` | Reference point for comparison |
+→ [Full options reference](https://GourangaDasSamrat.github.io/date-wiz-docs/api/relative/)
 
 ---
 
-### `smartFormat(date, options?)` — Context-Aware Formatting
+### `smartFormat()` — Context-aware labels
 
-Automatically picks the most readable format based on the current time:
+Automatically picks the most human-readable format:
 
-```ts
-import { smartFormat } from 'date-wiz';
+| Date | Output |
+|---|---|
+| Today | `"Today at 4:30 PM"` |
+| Yesterday | `"Yesterday at 11:00 AM"` |
+| Within last 6 days | `"Wednesday at 2:00 PM"` |
+| This year | `"Oct 12"` |
+| Past years | `"Oct 12, 2022"` |
 
-smartFormat(new Date())                    // "Today at 2:30 PM"
-smartFormat(yesterday)                     // "Yesterday at 11:00 AM"
-smartFormat(threeDaysAgo)                  // "Thursday at 9:00 AM"
-smartFormat(new Date('2026-01-05'))        // "Jan 5"
-smartFormat(new Date('2022-10-12'))        // "Oct 12, 2022"
-
-// Custom labels
-smartFormat(new Date(), {
-  locale: 'pt-BR',
-  labels: { todayAt: 'Hoje às', yesterdayAt: 'Ontem às' }
-})
-// → "Hoje às 14:30"
-```
+→ [Full reference](https://GourangaDasSamrat.github.io/date-wiz-docs/api/smart-format/)
 
 ---
 
-### `parse(input, options?)` — Intelligent Parsing
+### `parse()` — Intelligent parsing
 
-Accepts 20+ date formats without a strict format string:
+No format string needed — date-wiz figures it out:
 
 ```ts
 import { parse } from 'date-wiz';
-// or: import { parse } from 'date-wiz/parse';
 
-parse('2024-05-15')      // ISO 8601
-parse('20240515')        // Compact YYYYMMDD
-parse('15-05-2024')      // DD-MM-YYYY
-parse('May 15, 2024')    // Natural language
-parse('+2d')             // 2 days from now
-parse('-1w')             // 1 week ago
-parse('+3M')             // 3 months from now
-parse('+4h')             // 4 hours from now
-parse('next_monday')     // Next Monday
-parse('last_friday')     // Last Friday
-parse('bad input')       // → null
+parse('20240515')       // compact YYYYMMDD
+parse('15-05-2024')     // regional DD-MM-YYYY
+parse('May 15, 2024')   // natural language
+parse('+2d')            // 2 days from now
+parse('-1w')            // 1 week ago
+parse('next_monday')    // next Monday
+parse('last_friday')    // last Friday
 ```
 
-**Supported shorthand units for `+N<unit>` / `-N<unit>`:**
-
-| Unit | Symbol |
-|---|---|
-| Milliseconds | `ms` |
-| Seconds | `s` |
-| Minutes | `m` |
-| Hours | `h` |
-| Days | `d` |
-| Weeks | `w` |
-| Months | `M` |
-| Years | `y` |
+→ [All supported formats](https://GourangaDasSamrat.github.io/date-wiz-docs/api/parse/)
 
 ---
 
-### Business Day Utilities
+### Business day utilities
 
 ```ts
-import { addBusinessDays, subtractBusinessDays, countBusinessDays, isWithinWorkingHours, checkIsBusinessDay } from 'date-wiz';
-// or: import { ... } from 'date-wiz/business';
+import { addBusinessDays, countBusinessDays, isWithinWorkingHours } from 'date-wiz';
 
-// Add 5 business days (skips weekends)
-addBusinessDays(new Date(), 5)
+// Skip weekends + holidays automatically
+addBusinessDays(new Date(), 5, { holidays: ['2026-12-25'] });
 
-// With holiday exclusions
-addBusinessDays(new Date(), 5, {
-  holidays: ['2024-12-25', '2024-01-01']
-})
-
-// Subtract business days
-subtractBusinessDays(new Date(), 3)
+// SLA working hours check
+isWithinWorkingHours(new Date(), { start: '09:00', end: '18:00' });
 
 // Count business days between two dates
-countBusinessDays(startDate, endDate)
-countBusinessDays(startDate, endDate, { holidays: ['2024-12-25'] })
-
-// SLA / working hours check
-isWithinWorkingHours(new Date(), { start: '09:00', end: '18:00' })
-isWithinWorkingHours(new Date(), {
-  start: '09:00',
-  end: '18:00',
-  workDays: [0, 1, 2, 3, 4, 5, 6] // all days
-})
-
-// Is today a business day?
-checkIsBusinessDay(new Date())
-checkIsBusinessDay(new Date(), { holidays: ['2024-12-25'] })
+countBusinessDays(startDate, endDate, { holidays: ['2026-12-25'] });
 ```
+
+→ [Business day guide](https://GourangaDasSamrat.github.io/date-wiz-docs/guides/business-days/)
 
 ---
 
-### Arithmetic Utilities
+### Arithmetic utilities
 
 ```ts
-import { add, subtract, diff, isBefore, isAfter, isSameDay, clampDate, startOf, endOf } from 'date-wiz';
+import { add, subtract, diff, startOf, endOf, isBefore } from 'date-wiz';
 
-add(date, 3, 'days')          // new Date, 3 days later
-subtract(date, 2, 'hours')    // new Date, 2 hours earlier
-diff(dateA, dateB, 'days')    // number (e.g. 14)
-
-isBefore(dateA, dateB)        // boolean
-isAfter(dateA, dateB)         // boolean
-isSameDay(dateA, dateB)       // boolean
-
-clampDate(date, min, max)     // clamped Date
-
-startOf(date, 'day')          // 2026-03-15T00:00:00.000
-startOf(date, 'month')        // 2026-03-01T00:00:00.000
-startOf(date, 'year')         // 2026-01-01T00:00:00.000
-
-endOf(date, 'day')            // 2026-03-15T23:59:59.999
-endOf(date, 'month')          // 2026-03-31T23:59:59.999
+add(date, 3, 'days')        // immutable — returns new Date
+subtract(date, 2, 'hours')
+diff(dateA, dateB, 'days')  // → 14
+startOf(date, 'month')      // → 2026-03-01T00:00:00.000
+endOf(date, 'day')          // → 2026-03-15T23:59:59.999
+isBefore(dateA, dateB)      // → boolean
 ```
 
-**Duration units:**
-
-`milliseconds` / `ms`, `seconds` / `s`, `minutes` / `m`, `hours` / `h`, `days` / `d`, `weeks` / `w`, `months` / `M`, `years` / `y`, `businessDays`
+→ [Arithmetic reference](https://GourangaDasSamrat.github.io/date-wiz-docs/api/arithmetic/)
 
 ---
 
-## Tree-Shaking (Sub-path Imports)
+## Tree-shaking
 
-Import only what you need for the smallest possible bundle:
+Import from sub-paths for the smallest possible bundle:
 
 ```ts
-import { format }          from 'date-wiz/format';
-import { getRelativeTime } from 'date-wiz/relative';
-import { addBusinessDays } from 'date-wiz/business';
-import { parse }           from 'date-wiz/parse';
+import { format }          from 'date-wiz/format';    // ~1.2 KB
+import { getRelativeTime } from 'date-wiz/relative';  // ~1.4 KB
+import { addBusinessDays } from 'date-wiz/business';  // ~1.2 KB
+import { parse }           from 'date-wiz/parse';     // ~1.5 KB
 ```
+
+→ [Tree-shaking guide](https://GourangaDasSamrat.github.io/date-wiz-docs/guides/tree-shaking/)
 
 ---
 
-## i18n Examples
+## Error handling
 
-All locale support is powered by the native `Intl` API — no locale files bundled:
+date-wiz never throws. Every function returns a configurable fallback on invalid input:
 
 ```ts
-format(new Date(), 'DD MMMM YYYY', 'bn-BD')  // "১৫ মার্চ ২০২৬"
-format(new Date(), 'MMMM', 'ar')             // "مارس"
-format(new Date(), 'dddd', 'ja')             // "日曜日"
-getRelativeTime(date, { locale: 'fr' })      // "il y a 2 jours"
-getRelativeTime(date, { locale: 'de' })      // "vor 2 Tagen"
+format('bad', 'YYYY')                               // "Invalid Date"
+format('bad', 'YYYY', undefined, { fallback: '—' }) // "—"
+parse('???')                                        // null
 ```
+
+→ [Error handling guide](https://GourangaDasSamrat.github.io/date-wiz-docs/guides/error-handling/)
 
 ---
 
-## Error Handling
+## Documentation
 
-`date-wiz` never throws on invalid input. Every function accepts a `fallback` option:
+The README is intentionally concise. Everything you need is in the docs:
 
-```ts
-format('bad', 'YYYY')                             // "Invalid Date"
-format('bad', 'YYYY', undefined, { fallback: '' }) // ""
-getRelativeTime('bad', { fallback: null })          // null → ""
-parse('???')                                       // null
-```
+| | |
+|---|---|
+| 🚀 [Quick Start](https://GourangaDasSamrat.github.io/date-wiz-docs/guides/quick-start/) | Up and running in 2 minutes |
+| 📐 [API Reference](https://GourangaDasSamrat.github.io/date-wiz-docs/api/format/) | Every function, option, and type |
+| 🌍 [i18n Guide](https://GourangaDasSamrat.github.io/date-wiz-docs/guides/i18n/) | 100+ locales, zero locale files |
+| 🏢 [Business Days](https://GourangaDasSamrat.github.io/date-wiz-docs/guides/business-days/) | SLA logic, holiday exclusions |
+| ⚛️ [React Examples](https://GourangaDasSamrat.github.io/date-wiz-docs/examples/react/) | Hooks, components, patterns |
+| ▲ [Next.js Examples](https://GourangaDasSamrat.github.io/date-wiz-docs/examples/nextjs/) | RSC, client components, API routes |
+| 🏗️ [Architecture](https://GourangaDasSamrat.github.io/date-wiz-docs/guides/architecture/) | How it's built and why |
 
 ---
 
-## Environments
+## Contributing
 
-Supports all modern environments:
+Contributions are welcome. Please read the [contributing guide](./docs/CONTRIBUTING.md) and make sure all tests pass before opening a pull request.
 
-- **Node.js** ≥ 14 (CJS `require` and ESM `import`)
-- **Browsers** (ESM / UMD via CDN)
-- **React / Vite / Next.js / Webpack** (tree-shakable ESM)
-- **Deno** (ESM)
-
-```html
-<!-- CDN (UMD) -->
-<script src="https://unpkg.com/date-wiz/dist/umd/index.js"></script>
-<script>
-  const { format } = dateWiz;
-  console.log(format(new Date(), 'DD MMM YYYY'));
-</script>
+```bash
+git clone https://github.com/GourangaDasSamrat/date-wiz.git
+cd date-wiz
+npm install
+npm test        # 107 tests across 7 suites
+npm run build   # ESM + CJS + types
 ```
 
 ---
